@@ -3,8 +3,8 @@
 #![doc = include_str!("../syntax.md")]
 
 mod error;
-mod matcher;
+mod filter;
 mod parser;
 
 pub use error::Error;
-pub use matcher::PathMatcher;
+pub use filter::PathFilter;

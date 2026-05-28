@@ -25,8 +25,8 @@ struct Rule {
 
 /// Matches paths against a pathfilter rule set.
 ///
-/// A `PathMatcher` is built from pathfilter text, either by parsing a string
-/// with [`FromStr`] or by loading a file with [`PathMatcher::from_file`].
+/// A `PathFilter` is built from pathfilter text, either by parsing a string
+/// with [`FromStr`] or by loading a file with [`PathFilter::from_file`].
 ///
 /// Patterns exclude paths by default. A pattern prefixed with `!` includes
 /// matching paths again. Inline directives, such as `@priority:100`, may appear
@@ -35,22 +35,22 @@ struct Rule {
 /// Rules are evaluated by priority. The highest-priority matching rule wins,
 /// and later rules win when multiple matching rules have the same priority.
 #[derive(Debug)]
-pub struct PathMatcher {
+pub struct PathFilter {
     rules: Vec<Rule>,
 }
 
-impl PathMatcher {
+impl PathFilter {
     /// Loads a pathfilter file and builds a matcher from its contents.
     ///
     /// This is equivalent to reading the file as UTF-8 text and parsing it with
-    /// [`PathMatcher`]'s [`FromStr`] implementation.
+    /// [`PathFilter`]'s [`FromStr`] implementation.
     pub fn from_file<P: AsRef<Path>>(file: P) -> Result<Self, Error> {
         let contents = fs::read_to_string(file)?;
         contents.parse()
     }
 }
 
-impl FromStr for PathMatcher {
+impl FromStr for PathFilter {
     type Err = Error;
 
     /// Parses pathfilter text into a matcher.
@@ -172,7 +172,7 @@ fn push_rule(
     Ok(())
 }
 
-impl PathMatcher {
+impl PathFilter {
     /// Returns whether `path` is excluded by this matcher.
     ///
     /// A return value of `true` means the path is excluded. A return value of
@@ -234,10 +234,10 @@ impl Rule {
 mod test {
     use std::str::FromStr;
 
-    use crate::matcher::PathMatcher;
+    use crate::filter::PathFilter;
 
-    fn matcher(input: &str) -> PathMatcher {
-        PathMatcher::from_str(input).unwrap()
+    fn matcher(input: &str) -> PathFilter {
+        PathFilter::from_str(input).unwrap()
     }
 
     fn assert_matches(input: &str, cases: &[(&str, bool)]) {
@@ -292,7 +292,7 @@ mod test {
 
     #[test]
     fn global_directives_are_rejected() {
-        let error = PathMatcher::from_str("@priority:200\n!/logs/important/").unwrap_err();
+        let error = PathFilter::from_str("@priority:200\n!/logs/important/").unwrap_err();
 
         assert!(
             error
@@ -392,14 +392,14 @@ mod test {
 
     #[test]
     fn unknown_directive_is_rejected() {
-        let error = PathMatcher::from_str("@unknown:1 /pattern").unwrap_err();
+        let error = PathFilter::from_str("@unknown:1 /pattern").unwrap_err();
 
         assert!(error.to_string().contains("unknown directive 'unknown'"));
     }
 
     #[test]
     fn invalid_priority_value_is_rejected() {
-        let error = PathMatcher::from_str("@priority:high /pattern").unwrap_err();
+        let error = PathFilter::from_str("@priority:high /pattern").unwrap_err();
 
         assert!(
             error
@@ -410,7 +410,7 @@ mod test {
 
     #[test]
     fn negated_patterns_must_be_absolute() {
-        let error = PathMatcher::from_str("*\n!important/").unwrap_err();
+        let error = PathFilter::from_str("*\n!important/").unwrap_err();
 
         assert!(
             error
