@@ -62,7 +62,7 @@ impl FromStr for PathFilter {
     /// Negated patterns must be absolute and must not contain `**`, because the
     /// matcher expands them into parent-directory include rules.
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let PatternFile { entries } = parser::parse_input(&s)?;
+        let PatternFile { entries } = parser::parse_input(s)?;
 
         let mut rules = vec![];
         for entry in entries {

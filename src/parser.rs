@@ -57,7 +57,7 @@ impl TryFrom<Pair<'_, Rule>> for PatternFileEntry {
         let result = match rule {
             Rule::blank_line => Self::Blank {},
             Rule::comment_line => {
-                while let Some(_) = inner.next() { /* drain everything */ }
+                for _ in inner.by_ref() { /* drain everything */ }
 
                 Self::Comment {}
             }
@@ -112,7 +112,7 @@ impl TryFrom<Pair<'_, Rule>> for GlobPattern {
                     });
                 }
                 Rule::pattern_negation => {
-                    assert_eq!(negated, false);
+                    assert!(!negated);
                     negated = true;
                 }
                 _ => unreachable!("unexpected rule {:?}", entry.as_rule()),
