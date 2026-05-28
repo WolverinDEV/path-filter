@@ -1,0 +1,28 @@
+// Pathfilter grammar.
+
+file = { SOI ~ (line ~ line_ending)* ~ line? ~ EOI }
+
+line = _{ blank_line | comment_line | directive_line | pattern_line }
+
+blank_line = { horizontal_space* ~ &line_ending }
+comment_line = { comment ~ &(line_ending | EOI) }
+directive_line = { directive+ ~ &(line_ending | EOI) }
+pattern_line = { (directive ~ horizontal_space+)* ~ pattern }
+
+comment = { "#" ~ horizontal_space* ~ comment_text }
+comment_text = @{ (!line_ending ~ ANY)* }
+
+directive = { "@" ~ directive_key ~ ":" ~ directive_value }
+directive_key = @{ (ASCII_ALPHANUMERIC | "_" | "-")+ }
+directive_value = { quoted_value | bare_value }
+
+pattern = { pattern_negation? ~ pattern_glob }
+pattern_negation = { "!" }
+pattern_glob = @{ (!line_ending ~ ANY)+ }
+
+/* General types */
+horizontal_space = _{ " " | "\t" }
+line_ending = _{ "\r\n" | "\n" | "\r" }
+escaped_char = _{ "\\" ~ !line_ending ~ ANY }
+quoted_value = @{ "\"" ~ (escaped_char | !("\"" | line_ending) ~ ANY)* ~ "\"" }
+bare_value = @{ (!(horizontal_space | line_ending) ~ ANY)+ }

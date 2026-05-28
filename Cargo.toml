@@ -1,0 +1,12 @@
+[package]
+name = "path-filter"
+version = "0.1.0"
+edition = "2024"
+readme = "README.md"
+
+[dependencies]
+glob = "0.3.3"
+itertools = "0.14.0"
+pest = "2.8.6"
+pest_derive = "2.8.6"
+thiserror = "2.0.18"
