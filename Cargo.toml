@@ -2,6 +2,9 @@
 name = "path-filter"
 version = "0.1.0"
 edition = "2024"
+authors = ["Markus Hadenfeldt <mhadenfeldt@did.science>"]
+repository = "https://github.com/WolverinDEV/path-filter"
+license-file = "LICENSE"
 readme = "README.md"
 
 [dependencies]
