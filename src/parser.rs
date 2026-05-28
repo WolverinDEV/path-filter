@@ -1,5 +1,8 @@
 use itertools::Itertools;
-use pest::{Parser, iterators::Pair};
+use pest::{
+    Parser,
+    iterators::Pair,
+};
 use pest_derive::Parser;
 
 use crate::error::Error;
@@ -204,7 +207,13 @@ pub fn parse_input(value: &str) -> Result<PatternFile, Error> {
 #[cfg(test)]
 mod test {
 
-    use crate::parser::{Directive, GlobPattern, PatternFile, PatternFileEntry, StringLiteral};
+    use crate::parser::{
+        Directive,
+        GlobPattern,
+        PatternFile,
+        PatternFileEntry,
+        StringLiteral,
+    };
 
     fn directive(key: &str, value: &str) -> Directive {
         Directive {

@@ -1,8 +1,16 @@
-use std::{fs, path::Path, str::FromStr};
+use std::{
+    fs,
+    path::Path,
+    str::FromStr,
+};
 
 use crate::{
     error::Error,
-    parser::{self, PatternFile, PatternFileEntry},
+    parser::{
+        self,
+        PatternFile,
+        PatternFileEntry,
+    },
 };
 
 #[derive(Debug)]
