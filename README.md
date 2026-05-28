@@ -3,8 +3,8 @@
 [license: gpl v3]: https://img.shields.io/badge/License-GPLv3-blue.svg
 [latest version]: https://img.shields.io/crates/v/path-filter.svg
 [crates.io]: https://crates.io/crates/path-filter
-[github build status]: https://github.com/WolverinDEV/path-filter/actions/workflows/rust.yml/badge.svg?branch=master
-[actions]: https://github.com/WolverinDEV/path-filter/actions/workflows/rust.yml
+[github build status]: https://github.com/WolverinDEV/path-filter/actions/workflows/ci.yml/badge.svg?branch=master
+[actions]: https://github.com/WolverinDEV/path-filter/actions/workflows/ci.yml
 
 `path-filter` matches normalized paths against a small include/exclude rule format.
 Glob patterns exclude paths by default. Prefix a pattern with `!` to include paths again. 
